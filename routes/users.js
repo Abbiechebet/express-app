@@ -1,37 +1,36 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const user = [{
-  name:"Kuria",
-  age: 20,
-  sex: "female"
-}];
+const user = [
+  {
+    name: "Kuria",
+    age: 20,
+    sex: "female",
+  },
+];
 var id = 1;
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.json('respond with a resource');
+router.get(function (req, res, next) {
+  res.send("respond with a resource");
 });
 
 router
-  .route("/users")
-  .get((req, res) => {
-    return res.json({user});
+  .get('/read-user', (req, res) => {
+    return res.json(user);
   })
 
-  .post((req, res) => {
+  router.post('/create-user', (req, res) => {
     user.push({
       name: req.body,
       id: ++id,
     });
-    return res.send({ message: "Created" });
+    return res.json({ message: "Created", user });
   });
 
-router
-  .route("/:id")
-  .get((req, res) => {
-    const user = user.find((val) => val.id === Number(req.params.id));
-    return res.send({user});
-  })
+router.get('/read-user:id', (req, res) => {
+  const user = user.find((val) => val.id === Number(req.params.id));
+  return res.json(user);
+});
 
 module.exports = router;
