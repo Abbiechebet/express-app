@@ -11,7 +11,7 @@ const user = [
 var id = 1;
 
 /* GET users listing. */
-router.get(function (req, res, next) {
+router.get('/', function (req, res, next) {
   res.send("respond with a resource");
 });
 
