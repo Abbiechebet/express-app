@@ -1,36 +1,47 @@
 var express = require("express");
 var router = express.Router();
 
-const user = [
+const users = [
   {
     name: "Kuria",
     age: 20,
     sex: "female",
   },
+  {
+    name: "Birir",
+    age: 25,
+    sex: "male",
+  },
 ];
-var id = 1;
 
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get("/", (req, res) => {
   res.send("respond with a resource");
 });
 
-router
-  .get('/read-user', (req, res) => {
-    return res.json(user);
-  })
-
-  router.post('/create-user', (req, res) => {
-    user.push({
-      name: req.body,
-      id: ++id,
-    });
-    return res.json({ message: "Created", user });
-  });
-
-router.get('/read-user:id', (req, res) => {
-  const user = user.find((val) => val.id === Number(req.params.id));
-  return res.json(user);
+router.get("/get-user", (req, res) => {
+  return res.json(users);
 });
 
+router.post("/create-user", (req, res) => {
+  const userObject = req.body;
+  users.push(userObject);
+  res.status(201).json({
+    status: "success",
+    message: "User Created",
+    users,
+  });
+});
+
+router.get("/get-user/:name", (req, res) => {
+  const name = req.params.name;
+  const user = users.find(
+    (user) => user.name.toLowerCase() === name.toLowerCase()
+  );
+  return res.json({
+    status: "success",
+    message: "User found",
+    user,
+  });
+});
 module.exports = router;
